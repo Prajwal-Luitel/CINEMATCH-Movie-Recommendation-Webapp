@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinemaMatch - Top Grossing Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/grossing.css' %}">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <img src="{% static 'logo/cinematch logo.png' %}" alt="Logo" class="logo-img">
+            <div class="logo-text"><span class="cine">CINE</span><span class="match">MATCH</span></div>
+        </div>
+         <div class="nav-links">
+            <a href="{% url 'home' %}" >Home</a>
+            <a href="{% url 'grossing' %}" class="active">Grossing</a>
+             <a href="{% url 'analytics' %}">Analytics</a>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main>
+        <section class="page-title">
+            <h1>Top Grossing Movies</h1>
+            <p>Discover the highest grossing films of all time and by year</p>
+        </section>
+
+        <!-- Top 25 Grossing Movies Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Top 25 Grossing Movies</h2>
+            </div>
+
+            <div class="movie-grid" id="top-movies-grid">
+                {% for movie in top25 %}
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}"
+                        class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">{{ movie.title }}</div>
+                        <div class="movie-year">{{ movie.release_year }}</div>
+                        <div class="movie-gross">${{ movie.revenue }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Yearly Grossing Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Top Grossing in <span id="selected-year">{{ selected_year }}</span></h2>
+                <div class="year-selector">
+                    <span class="select-year">Select Year:</span>
+                    <form method="GET">
+                        <select name="year" onchange="this.form.submit()">
+                            {% for y in years %}
+                            <option value="{{ y }}" {% if y|stringformat:"s" == selected_year|stringformat:"s" %}selected{% endif %}>
+                            {{ y }}
+                            </option>
+                            {% endfor %}
+
+                        </select>
+                    </form>
+                </div>
+            </div>
+
+            <div class="movie-grid" id="yearly-movies-grid">
+                {% for movie in yearly_movies %}
+                <div class="movie-card">
+                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }}"
+                        class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">{{ movie.title }}</div>
+                        <div class="movie-year">{{ movie.release_year }}</div>
+                        <div class="movie-gross">${{ movie.revenue }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 CinemaMatch. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
