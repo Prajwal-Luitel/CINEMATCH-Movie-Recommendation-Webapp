@@ -70,6 +70,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'cinemax.wsgi.application'
 
+# For Environment Variables
+
+SPARK_CONFIG = {
+    "master_ip": os.getenv("SPARK_MASTER_IP", "127.0.0.1"),
+    "driver_memory": os.getenv("SPARK_DRIVER_MEMORY", "4g"),
+    "executor_memory": os.getenv("SPARK_EXECUTOR_MEMORY", "3g"),
+    "executor_cores": os.getenv("SPARK_EXECUTOR_CORES", "2"),
+    "executor_instances": os.getenv("SPARK_EXECUTOR_INSTANCES", "2"),
+}
+
+POSTGRES_CONFIG = {
+    "username": os.getenv("PG_UN", "postgres"),
+    "password": os.getenv("PG_PW", "password"),
+    "host": os.getenv("PG_HOST", "localhost"),
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -134,6 +149,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
 
 
 

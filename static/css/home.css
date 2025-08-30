@@ -286,7 +286,7 @@ footer {
     border: 1px solid #e53935;
 }
 
-.alert.success {
+/* .alert.success {
     background-color: #e8f5e9;
     color: #2e7d32;
     border: 1px solid #43a047;
@@ -296,7 +296,7 @@ footer {
     background-color: #fff8e1;
     color: #f57f17;
     border: 1px solid #ffb300;
-}
+} */
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }

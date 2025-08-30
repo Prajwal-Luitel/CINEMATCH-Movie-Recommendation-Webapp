@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.conf import settings
+
 
 from movies.models import MovieMetadata, MasterTable
 
@@ -11,13 +13,19 @@ from pyspark.sql import functions as F
 from django.shortcuts import render
 from django.db.models import Avg
 
+spark_config = settings.SPARK_CONFIG
+
 spark = (
-    SparkSession.builder.appName("cinematch")
-    .config("spark.driver.memory", "4g")
-    .config("spark.executor.memory", "5g")
-    .config("spark.sql.shuffle.partitions", "16")
+    SparkSession.builder
+    .master(f"spark://{spark_config['master_ip']}:7077")
+    .appName("cinematch")
+    .config("spark.driver.memory", spark_config["driver_memory"])
+    .config("spark.executor.memory", spark_config["executor_memory"])
+    .config("spark.executor.cores", spark_config["executor_cores"])
+    .config("spark.executor.instances", spark_config["executor_instances"])
+    .config("spark.sql.shuffle.partitions", "4")
     .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
-    .config("spark.kryoserializer.buffer.max", "1000M")
+    .config("spark.kryoserializer.buffer.max", "500M")
     .getOrCreate()
 )
 
