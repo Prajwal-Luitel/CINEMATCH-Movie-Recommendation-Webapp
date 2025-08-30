@@ -29,7 +29,7 @@ spark = (
     .getOrCreate()
 )
 
-INPUT_PATH = "/home/prajwal/Movie-Data/Transform"
+INPUT_PATH = "s3a://movie-recommendationsystem/transform/"
 
 # Load once
 lsh_model = BucketedRandomProjectionLSHModel.load(
