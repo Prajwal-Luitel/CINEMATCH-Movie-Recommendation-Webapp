@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,8 +82,8 @@ SPARK_CONFIG = {
 }
 
 POSTGRES_CONFIG = {
-    "username": os.getenv("PG_UN", "postgres"),
-    "password": os.getenv("PG_PW", "password"),
+    "username": os.getenv("PG_UN"),
+    "password": os.getenv("PG_PW"),
     "host": os.getenv("PG_HOST", "localhost"),
 }
 
@@ -100,9 +101,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',
+        'USER': POSTGRES_CONFIG['username'],
+        'PASSWORD': POSTGRES_CONFIG['password'],
+        'HOST': POSTGRES_CONFIG['host'],
         'PORT': '5432',
     }
 }
@@ -141,7 +142,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-import os
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
