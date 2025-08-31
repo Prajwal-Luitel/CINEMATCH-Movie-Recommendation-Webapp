@@ -137,6 +137,7 @@ def analytics(request):
             SELECT unnest(genres_list) as genre, COUNT(*) as count
             FROM master_table
             WHERE genres_list IS NOT NULL
+            AND NOT ('Unknown' = ANY(genres_list))
             GROUP BY genre
             ORDER BY count DESC
             LIMIT 10;

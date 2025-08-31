@@ -8,6 +8,7 @@
     <title>CinemaMatch - Analytics</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <link rel="stylesheet" href="{% static 'css/analytics.css' %}">
 </head>
 
@@ -171,8 +172,17 @@
                                 return context.label + ': ' + context.raw;
                             }
                         }
+                    },
+                    datalabels: {
+                        color: '#000',
+                        formatter: function (value, context) {
+                            let total = context.chart._metasets[context.datasetIndex].total;
+                            let percentage = ((value / total) * 100).toFixed(1);
+                            return percentage + '%';
+                        }
                     }
-                }
+                },
+                
             };
 
             const scatterOptions = {
@@ -249,7 +259,8 @@
             new Chart(document.getElementById('genreChart'), {
                 type: 'pie',
                 data: genreData,
-                options: pieOptions
+                options: pieOptions,
+                plugins: [ChartDataLabels]
             });
 
             new Chart(document.getElementById('budgetRevenueChart'), {
