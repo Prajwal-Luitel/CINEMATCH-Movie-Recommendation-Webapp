@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'cinemax.wsgi.application'
 SPARK_CONFIG = {
     "master_ip": os.getenv("SPARK_MASTER_IP", "127.0.0.1"),
     "driver_memory": os.getenv("SPARK_DRIVER_MEMORY", "4g"),
-    "executor_memory": os.getenv("SPARK_EXECUTOR_MEMORY", "3g"),
+    "executor_memory": os.getenv("SPARK_EXECUTOR_MEMORY", "2g"),
     "executor_cores": os.getenv("SPARK_EXECUTOR_CORES", "2"),
     "executor_instances": os.getenv("SPARK_EXECUTOR_INSTANCES", "2"),
 }
