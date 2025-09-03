@@ -29,35 +29,44 @@ spark = (
     .getOrCreate()
 )
 
+# spark = (
+#     SparkSession.builder.appName("cinematch")
+#     .config("spark.driver.memory", "4g")
+#     .config("spark.executor.memory", "5g")
+#     .config("spark.sql.shuffle.partitions", "16")
+#     .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+#     .config("spark.kryoserializer.buffer.max", "1000M")
+#     .getOrCreate()
+# )
+
+# INPUT_PATH = "/home/prajwal/Movie-Data/Transform"
 INPUT_PATH = "s3a://movie-recommendationsystem/transform/"
 
 # Load once
 lsh_model = BucketedRandomProjectionLSHModel.load(
     os.path.join(INPUT_PATH, "stage2/lsh_model")
 )
+
 vector_df = spark.read.parquet(os.path.join(INPUT_PATH, "stage4/vector"))
+vector_df = vector_df.cache()
 
 
 def get_recommendations(movie_id, top_k=5):
-    # Get query vector
-    movie_vector = vector_df.filter(F.col("id") == movie_id).limit(1)
-    # print(f"{movie_vector.show()}")
+    movie_vector = (
+        vector_df.filter(F.col("id") == movie_id).select("norm_features").first()
+    )
 
-    # print(f"after it")
-
-    if movie_vector.count() == 0:
-        print(f"huh what happen")
+    if movie_vector is None:
         return []
 
-    query_vec = movie_vector.first()["norm_features"]
+    query_vec = movie_vector["norm_features"]
+
     # print(f"query_vec't go  {query_vec}")
     # Nearest neighbors
     neighbors = lsh_model.approxNearestNeighbors(
         dataset=vector_df, key=query_vec, numNearestNeighbors=top_k + 1
     )
-
     result = neighbors.filter(F.col("id") != movie_id).select("id").limit(top_k)
-
     return [row["id"] for row in result.collect()]
 
 
@@ -126,7 +135,7 @@ def grossing(request):
 
 
 def analytics(request):
-    
+
     # 1. Genre distribution (top 10)
     # Since genres_list is an ArrayField, annotate + unnest in DB is faster.
     from django.db import connection
@@ -151,10 +160,11 @@ def analytics(request):
     # 2. Budget vs Revenue (scatter)
     # Filter out 0 / null budget & revenue
     budget_revenue = [
-    {"x": row["budget"] / 1_000_000, "y": row["revenue"] / 1_000_000}
-    for row in MasterTable.objects.filter(budget__gt=0, revenue__gt=0).values(
-        "budget", "revenue"
-    ) ]
+        {"x": row["budget"] / 1_000_000, "y": row["revenue"] / 1_000_000}
+        for row in MasterTable.objects.filter(budget__gt=0, revenue__gt=0).values(
+            "budget", "revenue"
+        )
+    ]
 
     # 3. Revenue trends per year
     revenue_by_year = (
