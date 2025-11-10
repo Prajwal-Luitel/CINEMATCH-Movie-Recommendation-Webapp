@@ -63,4 +63,4 @@ http://127.0.0.1:8000/
 
 ![Project Image](Demo%20Image/Analytics%202.png)
 
-![Project Image](Demo%20Image/Analytics%203.png)
+![Project Image](<Demo Image/Analytics 3 .png>)
