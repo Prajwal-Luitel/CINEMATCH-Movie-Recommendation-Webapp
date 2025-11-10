@@ -40,3 +40,27 @@ PG_UN=postgres PG_PW=postgres python manage.py runserver
 - Access the Application
 Open your browser and navigate to:
 http://127.0.0.1:8000/
+
+## Aws Artichitecture
+
+![Aws Artichitecture](Demo%20Image/AWS%20ARCHITECTURE.png)
+
+## Work Showcase
+
+![Project Image](Demo%20Image/Home%20page.png)
+
+![Project Image](Demo%20Image/Recommend%201.png)
+
+![Project Image](Demo%20Image/Recommend%202.png)
+
+![Project Image](Demo%20Image/Grossing%201.png)
+
+![Project Image](Demo%20Image/Grossing%202.png)
+
+![Project Image](Demo%20Image/Grossing%203.png)
+
+![Project Image](Demo%20Image/Analytics%201.png)
+
+![Project Image](Demo%20Image/Analytics%202.png)
+
+![Project Image](Demo%20Image/Analytics%203.png)
